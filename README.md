@@ -108,3 +108,44 @@
 👉 Toute nouvelle feature doit respecter cette base.
 
 ---
+## Multi-resto et séparation des interfaces
+
+- L'application doit supporter **plusieurs restaurants** de manière indépendante.
+- Chaque restaurant a son propre compte, ses propres paramètres, son propre menu, ses propres commandes.
+- L'architecture doit être **multi-tenant** : toutes les données sont liées à un `restaurant_id`.
+
+- Il y a deux types d’interfaces / d’API :
+
+### 1️⃣ Interface "Admin" (côté restaurant / staff)
+
+- Gestion du compte restaurant.
+- Gestion du menu (ajout, édition, suppression d’items).
+- Configuration des paramètres (TPS/TVQ, tips, logo, horaires, disponibilité des plats).
+- Suivi des commandes en temps réel (Dashboard / KDS).
+
+- Cette interface nécessite une authentification (OAuth ou autre → Guest non autorisé).
+
+### 2️⃣ Interface "Client" (publique)
+
+- Le client scanne un QR code lié à un `restaurant_id`.
+- L’application récupère et affiche le menu correspondant (`/api/public/restaurants/:id/menu`).
+- Le client construit sa commande.
+- Paiement intégré.
+- Suivi de l’état de sa commande (optionnel).
+
+- Cette interface ne nécessite PAS de compte obligatoire → Guest Mode autorisé.
+
+### Résumé :
+
+| Côté          | API principale                         | Accès |
+|---------------|----------------------------------------|-------|
+| Admin (staff) | `/api/restaurants/...` + `/menu_items` + `/settings` | Authentifié staff |
+| Client        | `/api/public/restaurants/:id/menu` + `/orders` + `/payment` | Public (guest ou logged) |
+
+---
+
+La logique "multi-resto" doit être respectée dans toute la conception du backend et de la base de données.
+
+Les appels clients doivent TOUJOURS spécifier un `restaurant_id` en amont pour contextualiser le menu et les commandes.
+
+
