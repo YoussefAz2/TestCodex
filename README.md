@@ -23,8 +23,9 @@ src/controllers/admin/
 
 src/models/ — Modèles PostgreSQL
 
-src/middleware/isAdmin.js — Placeholder auth admin
+- Routes admin sous `/api/...` protégées par `isAdmin` pour gérer les restaurants, les plats et suivre les commandes (`GET /api/admin/orders`).
 
+- `/admin/orders` : suivi des commandes en temps réel
 src/config/database.js — Connexion PostgreSQL
 
 src/auth/index.js — Squelette OAuth + Guest Mode

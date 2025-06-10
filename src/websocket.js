@@ -1,18 +1,29 @@
 const WebSocket = require('ws');
 
+let wss;
+
 function initWebSocket(server) {
-  const wss = new WebSocket.Server({ server, path: '/ws' });
+  wss = new WebSocket.Server({ server, path: '/ws' });
 
   wss.on('connection', (ws) => {
     ws.send(JSON.stringify({ message: 'WebSocket connection established' }));
 
     ws.on('message', (data) => {
-      console.log('Received:', data);
-      // TODO: handle incoming messages
+      console.log('Received:', data.toString());
     });
   });
 
   return wss;
 }
 
-module.exports = initWebSocket;
+function broadcast(data) {
+  if (!wss) return;
+  const msg = JSON.stringify(data);
+  for (const client of wss.clients) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(msg);
+    }
+  }
+}
+
+module.exports = { initWebSocket, broadcast };

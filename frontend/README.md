@@ -18,4 +18,10 @@ The cart is stored locally using React context and `localStorage` so users can b
 
 ### Admin panel
 
-The `/admin` routes provide a small interface for restaurant staff to manage menu items and settings. Authentication is simplified for now.
+The `/admin` routes provide a small interface for restaurant staff to manage menu items, settings and view orders. Authentication is simplified for now.
+
+Available admin pages:
+- `/admin/login`
+- `/admin/menu`
+- `/admin/settings`
+- `/admin/orders`
