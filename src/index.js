@@ -1,7 +1,7 @@
 const http = require('http');
 const dotenv = require('dotenv');
 const app = require('./app');
-const initWebSocket = require('./websocket');
+const { initWebSocket } = require('./websocket');
 
 dotenv.config();
 
